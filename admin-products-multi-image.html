@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management - ZAVÉ Admin</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles-account.css">
+    <link rel="stylesheet" href="styles-admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="index.html" class="logo">ZAVÉ Admin</a>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html">View Site</a></li>
+                    <li><a href="admin-products-multi-image.html" class="active">Manage Products</a></li>
+                    <li><a href="account.html" id="accountLink">Account</a></li>
+                </ul>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Section -->
+    <section class="admin-section">
+        <div class="container">
+            <div class="admin-header">
+                <h1>Product Management</h1>
+                <button class="btn btn-primary" id="addProductBtn">+ Add New Product</button>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="admin-products-grid" id="adminProductsGrid">
+                <!-- Products will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Add/Edit Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content modal-xlarge">
+            <span class="close" id="closeProductModal">&times;</span>
+            <h2 id="modalTitle">Add New Product</h2>
+            
+            <form id="productForm">
+                <div class="form-grid">
+                    <div class="form-left">
+                        <div class="form-group">
+                            <label>Product Name *</label>
+                            <input type="text" id="productName" required placeholder="e.g., Velvet Noir">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Category *</label>
+                            <select id="productCategory" required>
+                                <option value="">Select Category</option>
+                                <option value="women">For Her</option>
+                                <option value="men">For Him</option>
+                                <option value="unisex">Unisex</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Price ($) *</label>
+                            <input type="number" id="productPrice" required placeholder="45.00" step="0.01" min="0">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Inspired By</label>
+                            <input type="text" id="productInspiredBy" placeholder="e.g., Tom Ford Black Orchid">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Fragrance Notes</label>
+                            <input type="text" id="productNotes" placeholder="e.g., Black Truffle, Ylang-Ylang, Bergamot">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="productDescription" rows="4" placeholder="Describe the fragrance..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Background Color/Gradient</label>
+                            <select id="productGradient">
+                                <option value="linear-gradient(135deg, #667eea 0%, #764ba2 100%)">Purple Blue</option>
+                                <option value="linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">Pink Red</option>
+                                <option value="linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)">Blue Cyan</option>
+                                <option value="linear-gradient(135deg, #fa709a 0%, #fee140 100%)">Pink Yellow</option>
+                                <option value="linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)">Aqua Pink</option>
+                                <option value="linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)">Rose Pink</option>
+                                <option value="linear-gradient(135deg, #30cfd0 0%, #330867 100%)">Teal Purple</option>
+                                <option value="linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)">Peach</option>
+                                <option value="linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)">Lavender Blue</option>
+                                <option value="linear-gradient(135deg, #2c2c2c 0%, #8b7355 100%)">Dark Brown</option>
+                            </select>
+                            <div class="gradient-preview" id="gradientPreview"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="productFeatured">
+                                <span>Feature on Homepage</span>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="productActive" checked>
+                                <span>Active (Visible to customers)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-right">
+                        <div class="form-group">
+                            <label>Product Images (Multiple)</label>
+                            <div class="multi-image-container">
+                                <!-- Image Gallery -->
+                                <div class="image-gallery" id="imageGallery">
+                                    <div class="gallery-placeholder">
+                                        <p>📸 No images added yet</p>
+                                        <small>Add images below</small>
+                                    </div>
+                                </div>
+
+                                <!-- Add Image Options -->
+                                <div class="add-image-section">
+                                    <div class="add-image-methods">
+                                        <div class="method-option">
+                                            <input type="file" id="productImageFile" accept="image/*" multiple style="display: none;">
+                                            <button type="button" class="btn btn-secondary full-width" onclick="document.getElementById('productImageFile').click()">
+                                                📁 Upload from Computer
+                                            </button>
+                                        </div>
+                                        <div class="method-divider">OR</div>
+                                        <div class="method-option">
+                                            <input type="url" id="productImageURL" placeholder="Paste image URL here">
+                                            <button type="button" class="btn btn-secondary full-width" onclick="addImageFromURL()">Add from URL</button>
+                                        </div>
+                                    </div>
+                                    <small class="help-text">💡 Add multiple images for different angles, packaging, or lifestyle shots</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" id="productId">
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeProductModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="saveProductBtn">Save Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Image Preview Modal -->
+    <div class="modal" id="imagePreviewModal">
+        <div class="modal-content modal-image">
+            <span class="close" id="closeImagePreview">&times;</span>
+            <img id="previewImage" src="" alt="Preview">
+            <div class="image-navigation">
+                <button class="btn btn-outline" id="prevImageBtn">‹ Previous</button>
+                <span id="imageCounter">1 / 1</span>
+                <button class="btn btn-outline" id="nextImageBtn">Next ›</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content modal-small">
+            <h2>Delete Product?</h2>
+            <p>Are you sure you want to delete this product? This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeDeleteModal()">Cancel</button>
+                <button class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>ZAVÉ</h3>
+                    <p>Admin Panel - Product Management with Multi-Image Support</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 ZAVÉ. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="admin-products-multi.js"></script>
+</body>
+</html>

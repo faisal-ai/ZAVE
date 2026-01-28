@@ -1,0 +1,332 @@
+================================================================
+ZAVÉ PERFUME WEBSITE - PAYMENT GATEWAY INTEGRATION GUIDE
+================================================================
+
+🎯 WHAT'S INCLUDED:
+- Stripe Payment Integration (Credit/Debit Cards)
+- PayPal Payment Integration
+- 3-Step Checkout Process
+- Order Summary with Promo Codes
+- Secure Payment Processing
+- Order Tracking Integration
+
+================================================================
+1. STRIPE SETUP (Recommended - Easier to Implement)
+================================================================
+
+📋 STEP 1: Create Stripe Account
+   - Go to: https://stripe.com
+   - Click "Start now" and sign up
+   - Complete account verification
+
+📋 STEP 2: Get Your API Keys
+   
+   FOR TESTING:
+   - Go to: https://dashboard.stripe.com/test/apikeys
+   - You'll see two keys:
+     * Publishable key (starts with pk_test_...)
+     * Secret key (starts with sk_test_...)
+   
+   FOR LIVE PAYMENTS:
+   - Toggle to "Live mode" in dashboard
+   - Go to: https://dashboard.stripe.com/apikeys
+   - You'll see:
+     * Publishable key (starts with pk_live_...)
+     * Secret key (starts with sk_live_...)
+
+📋 STEP 3: Configure Your Website
+   - Open checkout.js file
+   - Find this line:
+     const STRIPE_PUBLISHABLE_KEY = 'pk_test_51234567890abcdef';
+   - Replace with YOUR publishable key:
+     const STRIPE_PUBLISHABLE_KEY = 'pk_test_YOUR_KEY_HERE';
+
+📋 STEP 4: Test the Integration
+   
+   TEST CARDS (No real money charged):
+   - Success: 4242 4242 4242 4242
+   - Decline: 4000 0000 0000 0002
+   - 3D Secure: 4000 0025 0000 3155
+   
+   Use:
+   - Any future expiry date (e.g., 12/25)
+   - Any 3-digit CVC (e.g., 123)
+   - Any postal code
+
+📋 STEP 5: Go Live!
+   - When ready for real payments:
+   - Replace pk_test_ key with pk_live_ key
+   - Complete Stripe account activation
+   - Start accepting real payments!
+
+================================================================
+2. PAYPAL SETUP
+================================================================
+
+📋 STEP 1: Create PayPal Developer Account
+   - Go to: https://developer.paypal.com
+   - Sign in with your PayPal account
+   - Click "Dashboard"
+
+📋 STEP 2: Create a Sandbox App (For Testing)
+   - Click "Apps & Credentials"
+   - Select "Sandbox"
+   - Click "Create App"
+   - Enter app name (e.g., "ZAVÉ Perfumes")
+   - Copy the "Client ID"
+
+📋 STEP 3: Configure Your Website
+   - Open checkout.js file
+   - Find this line:
+     const PAYPAL_CLIENT_ID = 'YOUR_PAYPAL_CLIENT_ID';
+   - Replace with YOUR client ID:
+     const PAYPAL_CLIENT_ID = 'YOUR_CLIENT_ID_HERE';
+
+📋 STEP 4: Test with Sandbox
+   - Use PayPal sandbox accounts for testing
+   - No real money is charged
+
+📋 STEP 5: Go Live!
+   - When ready for real payments:
+   - Switch to "Live" in Apps & Credentials
+   - Create a new live app
+   - Use the Live Client ID in your code
+
+================================================================
+3. IMPORTANT SECURITY NOTES
+================================================================
+
+⚠️  CURRENT IMPLEMENTATION IS CLIENT-SIDE ONLY (FOR DEMO)
+
+✅ FOR PRODUCTION, YOU MUST:
+
+1. CREATE A BACKEND SERVER
+   - Node.js, Python, PHP, or any server-side language
+   - Never expose secret keys in client-side code
+   - Handle payment processing server-side
+
+2. STRIPE BACKEND FLOW:
+   a) Client adds items to cart
+   b) Client clicks checkout
+   c) Client sends order to YOUR server
+   d) Your server creates PaymentIntent with Stripe API
+   e) Server returns client_secret to client
+   f) Client confirms payment with client_secret
+   g) Stripe webhooks notify your server of success/failure
+   h) Server updates database and sends confirmation email
+
+3. PAYPAL BACKEND FLOW:
+   a) Similar to Stripe
+   b) Your server creates order
+   c) PayPal processes payment
+   d) Webhooks notify your server
+
+4. SECURITY BEST PRACTICES:
+   - Use HTTPS (SSL certificate)
+   - Validate all data server-side
+   - Implement CSRF protection
+   - Use environment variables for API keys
+   - Implement rate limiting
+   - Log all transactions
+   - Handle webhooks properly
+
+================================================================
+4. FILE STRUCTURE
+================================================================
+
+Your website should have:
+
+/zavé-website/
+  ├── index.html
+  ├── products.html
+  ├── story.html
+  ├── account.html
+  ├── checkout.html          ← NEW
+  ├── styles.css
+  ├── styles-account.css
+  ├── styles-checkout.css    ← NEW
+  ├── script.js
+  ├── account.js
+  └── checkout.js            ← NEW
+
+================================================================
+5. HOW TO USE THE CHECKOUT PAGE
+================================================================
+
+1. User adds products to cart
+2. User clicks "Proceed to Checkout"
+3. System checks if user is logged in
+   - If not, redirects to login page
+   - If yes, redirects to checkout.html
+4. User fills shipping information (Step 1)
+5. User selects payment method (Step 2)
+   - Credit Card (Stripe)
+   - PayPal
+6. User completes payment
+7. System shows confirmation (Step 3)
+8. Order saved to localStorage
+9. User can track order in account page
+
+================================================================
+6. PROMO CODES
+================================================================
+
+Built-in promo codes (can be customized in checkout.js):
+
+- WELCOME10  → 10% off
+- SAVE20     → 20% off
+- FREESHIP   → Free shipping
+
+To add more:
+1. Open checkout.js
+2. Find the applyPromo() function
+3. Add codes to promoCodes object
+
+================================================================
+7. UPDATING THE CART BUTTON
+================================================================
+
+To make the cart redirect to checkout page:
+
+In script.js or script-updated.js, update checkoutBtn click handler:
+
+OLD:
+showCheckoutForm();
+
+NEW:
+window.location.href = 'checkout.html';
+
+================================================================
+8. TESTING CHECKLIST
+================================================================
+
+□ Register a new user account
+□ Add products to cart
+□ Click checkout button
+□ Fill shipping information
+□ Try Stripe payment with test card (4242 4242 4242 4242)
+□ Try declined card (4000 0000 0000 0002)
+□ Try PayPal payment (if configured)
+□ Apply promo codes
+□ Check order appears in account dashboard
+□ Verify order tracking works
+□ Test on mobile device
+
+================================================================
+9. COMMON ISSUES & SOLUTIONS
+================================================================
+
+ISSUE: "Stripe is not defined"
+SOLUTION: Make sure <script src="https://js.stripe.com/v3/"></script> 
+          is in checkout.html <head> section
+
+ISSUE: "Invalid API Key"
+SOLUTION: Check that you copied the full API key correctly
+          including the pk_test_ or pk_live_ prefix
+
+ISSUE: "PayPal button doesn't show"
+SOLUTION: Check browser console for errors
+          Verify Client ID is correct
+          Make sure PayPal script loaded
+
+ISSUE: "Checkout page is blank"
+SOLUTION: Check that all CSS files are linked:
+          - styles.css
+          - styles-account.css  
+          - styles-checkout.css
+
+ISSUE: "Order doesn't save"
+SOLUTION: Check browser console for JavaScript errors
+          Make sure user is logged in
+          Check localStorage isn't full
+
+================================================================
+10. GOING LIVE CHECKLIST
+================================================================
+
+□ Replace test API keys with live API keys
+□ Set up backend server for real payment processing
+□ Implement webhook handlers
+□ Get SSL certificate (HTTPS)
+□ Test with real payment (small amount)
+□ Set up payment failure notifications
+□ Configure email confirmations
+□ Add terms & conditions
+□ Add privacy policy
+□ Add refund policy
+□ Test on multiple devices/browsers
+□ Monitor first transactions closely
+
+================================================================
+11. BACKEND EXAMPLE (Node.js + Express)
+================================================================
+
+Here's a simple backend example for Stripe:
+
+// server.js
+const express = require('express');
+const stripe = require('stripe')('sk_test_YOUR_SECRET_KEY');
+const app = express();
+
+app.use(express.json());
+
+app.post('/create-payment-intent', async (req, res) => {
+  try {
+    const { amount } = req.body;
+    
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: amount * 100, // Convert to cents
+      currency: 'usd',
+    });
+    
+    res.json({ clientSecret: paymentIntent.client_secret });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.listen(3000, () => console.log('Server running'));
+
+================================================================
+12. SUPPORT RESOURCES
+================================================================
+
+Stripe Documentation:
+https://stripe.com/docs
+
+Stripe Testing:
+https://stripe.com/docs/testing
+
+PayPal Developer Docs:
+https://developer.paypal.com/docs
+
+Stripe Discord Community:
+https://discord.gg/stripe
+
+PayPal Developer Forum:
+https://www.paypal-community.com/
+
+================================================================
+13. COST BREAKDOWN
+================================================================
+
+STRIPE FEES:
+- 2.9% + $0.30 per successful card charge (US)
+- No monthly fees
+- No setup fees
+- Fees vary by country
+
+PAYPAL FEES:
+- 2.9% + $0.30 per transaction (US)
+- No monthly fees
+- No setup fees
+- International fees may vary
+
+================================================================
+
+Need help? The code includes detailed comments!
+Check checkout.js for inline documentation.
+
+Good luck with your ZAVÉ perfume business! 🌟
+
+================================================================

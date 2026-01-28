@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - ZAVÉ</title>
+    <link rel="stylesheet" href="styles.css?v=12">
+    <link rel="stylesheet" href="styles-account.css?v=12">
+    <link rel="stylesheet" href="styles-product-detail.css?v=12">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="index.html" class="logo">ZAVÉ</a>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html" class="active">Products</a></li>
+                    <li><a href="story.html">Our Story</a></li>
+                    <li><a href="#" class="cart-icon" id="cartIcon">Cart (<span id="cartCount">0</span>)</a></li>
+                    <li><a href="account.html" id="accountLink">Account</a></li>
+                </ul>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="product-detail-section">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html">Home</a> / 
+                <a href="products.html">Products</a> / 
+                <span id="breadcrumbProduct">Product</span>
+            </div>
+
+            <div class="product-detail-grid">
+                <div class="product-gallery">
+                    <div class="main-image-container">
+                        <div id="mainImage" class="main-image"></div>
+                        <button class="zoom-btn" onclick="openImageLightbox(currentImageIndex)">🔍 View Full Size</button>
+                    </div>
+                    <div class="thumbnail-gallery" id="thumbnailGallery"></div>
+                </div>
+
+                <div class="product-info-section">
+                    <div class="product-category-badge" id="productCategory"></div>
+                    <h1 id="productName">Loading...</h1>
+                    <div class="product-rating">
+                        <span class="stars">★★★★★</span>
+                        <span class="rating-count">(127 reviews)</span>
+                    </div>
+                    <div class="product-price-section">
+                        <span class="product-price" id="productPrice">$0.00</span>
+                        <span class="product-size">50ml Eau de Parfum</span>
+                    </div>
+
+                    <div class="product-inspired" id="productInspired"></div>
+
+                    <div class="product-description">
+                        <h3>About This Fragrance</h3>
+                        <p id="productDescription"></p>
+                    </div>
+
+                    <div class="fragrance-notes" id="fragranceNotes">
+                        <h3>Fragrance Notes</h3>
+                        <p id="productNotes"></p>
+                    </div>
+
+                    <div class="product-actions">
+                        <div class="quantity-selector">
+                            <button onclick="decreaseQuantity()">−</button>
+                            <input type="number" id="quantity" value="1" min="1" max="10">
+                            <button onclick="increaseQuantity()">+</button>
+                        </div>
+                        <button class="btn btn-primary btn-add-to-cart" id="addToCartBtn">
+                            Add to Cart - <span id="totalPrice">$0.00</span>
+                        </button>
+                    </div>
+
+                    <div class="product-features">
+                        <div class="feature-item">
+                            <span class="feature-icon">✓</span>
+                            <span>Free shipping on orders over $50</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">✓</span>
+                            <span>30-day return policy</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">✓</span>
+                            <span>Authentic luxury fragrance</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">✓</span>
+                            <span>Long-lasting formula</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        <!-- Reviews Section -->
+            <div class="reviews-section">
+                <div class="reviews-header">
+                    <h2>Customer Reviews</h2>
+                    <button class="btn btn-primary write-review-btn" onclick="toggleReviewForm()">Write a Review</button>
+                </div>
+
+                <div id="reviewForm" class="review-form" style="display:none;">
+                    <h3>Write Your Review</h3>
+                    <form onsubmit="submitReview(event)">
+                        <div class="rating-input" id="ratingInput">
+                            <input type="radio" name="rating" value="1" id="star1" required>
+                            <label for="star1">★</label>
+                            <input type="radio" name="rating" value="2" id="star2">
+                            <label for="star2">★</label>
+                            <input type="radio" name="rating" value="3" id="star3">
+                            <label for="star3">★</label>
+                            <input type="radio" name="rating" value="4" id="star4">
+                            <label for="star4">★</label>
+                            <input type="radio" name="rating" value="5" id="star5">
+                            <label for="star5">★</label>
+                        </div>
+                        <div class="form-group">
+                            <label>Your Name *</label>
+                            <input type="text" id="reviewName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Your Review *</label>
+                            <input type="text" id="reviewTitle" required placeholder="Sum up your experience">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                        <button type="button" class="btn btn-outline" onclick="toggleReviewForm()">Cancel</button>
+                    </form>
+                </div>
+
+                <div id="reviewsList"></div>
+            </div>
+            <div class="related-products-section">
+                <h2>You May Also Like</h2>
+                <div class="related-products-grid" id="relatedProducts"></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="lightbox" id="imageLightbox">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <button class="lightbox-prev" onclick="navigateLightbox(-1)">‹</button>
+        <button class="lightbox-next" onclick="navigateLightbox(1)">›</button>
+        <div class="lightbox-content">
+            <img id="lightboxImage" src="" alt="Product">
+            <div class="lightbox-counter" id="lightboxCounter">1 / 1</div>
+        </div>
+    </div>
+
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <span class="close" id="closeCart">&times;</span>
+            <h2>Shopping Cart</h2>
+            <div id="cartItems"></div>
+            <div class="cart-total">
+                <h3>Total: $<span id="cartTotal">0.00</span></h3>
+                <button class="btn btn-primary" id="checkoutBtn">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>ZAVÉ</h3>
+                    <p>Redefining luxury fragrances for the modern urban lifestyle.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 ZAVÉ. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+    <script src="product-detail.js"></script>
+</body>
+</html>
